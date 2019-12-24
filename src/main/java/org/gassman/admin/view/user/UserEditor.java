@@ -31,9 +31,9 @@ public class UserEditor extends VerticalLayout implements KeyNotifier {
 
     /* Action buttons */
     Button save = new Button("Save", VaadinIcon.CHECK.create());
-    Button cancel = new Button("Cancel");
+    Button reset = new Button("Reset");
     Button delete = new Button("Delete", VaadinIcon.TRASH.create());
-    HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
+    HorizontalLayout actions = new HorizontalLayout(save, reset, delete);
 
     HorizontalLayout data = new HorizontalLayout(name, surname, mail);
 
@@ -59,7 +59,7 @@ public class UserEditor extends VerticalLayout implements KeyNotifier {
         // wire action buttons to save, delete and reset
         save.addClickListener(e -> save());
         delete.addClickListener(e -> delete());
-        cancel.addClickListener(e -> editUser(userDTO));
+        reset.addClickListener(e -> editUser(userDTO));
         setVisible(false);
     }
 
@@ -95,7 +95,7 @@ public class UserEditor extends VerticalLayout implements KeyNotifier {
         else {
             this.userDTO = userDTO;
         }
-        cancel.setVisible(persisted);
+        reset.setVisible(persisted);
 
         // Bind customer properties to similarly named fields
         // Could also use annotation or "manual binding" or programmatically

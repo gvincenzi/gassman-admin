@@ -45,7 +45,7 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
 
     /* Action buttons */
     Button save = new Button("Save", VaadinIcon.CHECK.create());
-    Button cancel = new Button("Cancel");
+    Button reset = new Button("Reset");
     Button delete = new Button("Delete", VaadinIcon.TRASH.create());
 
     Binder<ProductDTO> binder = new Binder<>(ProductDTO.class);
@@ -56,11 +56,11 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
         this.orderEditor = orderEditor;
         this.grid = new Grid<>(OrderDTO.class);
 
-        HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
+        HorizontalLayout actions = new HorizontalLayout(save, reset, delete);
         VerticalLayout editorFields = new VerticalLayout(name, description, unitOfMeasure, pricePerUnit, availableQuantity, deliveryDateTime, active, actions);
         editorFields.setWidth("30%");
-        grid.setColumns("user","quantity","totalToPay","payed");
-        grid.setWidth("70%");
+        grid.setColumns("user","quantity","totalToPay","payed","paymentExternalReference","paymentExternalDateTime");
+        grid.setWidth("100%");
 
         // Connect selected Product to editor or hide if none is selected
         grid.asSingleSelect().addValueChangeListener(e -> {
@@ -95,7 +95,7 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
         // wire action buttons to save, delete and reset
         save.addClickListener(e -> save());
         delete.addClickListener(e -> delete());
-        cancel.addClickListener(e -> editProduct(productDTO));
+        reset.addClickListener(e -> editProduct(productDTO));
         setVisible(false);
     }
 
@@ -132,7 +132,7 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
             grid.setItems(new ArrayList(0));
             this.productDTO = productDTO;
         }
-        cancel.setVisible(persisted);
+        reset.setVisible(persisted);
 
         // Bind customer properties to similarly named fields
         // Could also use annotation or "manual binding" or programmatically

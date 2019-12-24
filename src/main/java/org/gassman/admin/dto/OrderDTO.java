@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 public class OrderDTO {
@@ -15,6 +17,8 @@ public class OrderDTO {
     private String totalToPay;
     private ProductDTO product;
     private Boolean payed = Boolean.FALSE;
+    private String paymentExternalReference;
+    private LocalDateTime paymentExternalDateTime;
 
     public String getTotalToPay(){
         return this.getQuantity() != null && this.getProduct() != null

@@ -29,9 +29,8 @@ public class OrderEditor extends VerticalLayout implements KeyNotifier {
 
     /* Action buttons */
     Button save = new Button("Save", VaadinIcon.CHECK.create());
-    Button cancel = new Button("Cancel");
     Button delete = new Button("Delete", VaadinIcon.TRASH.create());
-    HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
+    HorizontalLayout actions = new HorizontalLayout(save, delete);
 
     Binder<OrderDTO> binder = new Binder<>(OrderDTO.class);
     private ChangeHandler changeHandler;
@@ -55,7 +54,6 @@ public class OrderEditor extends VerticalLayout implements KeyNotifier {
         // wire action buttons to save, delete and reset
         save.addClickListener(e -> save());
         delete.addClickListener(e -> delete());
-        cancel.addClickListener(e -> editOrder(orderDTO));
         setVisible(false);
     }
 
@@ -80,7 +78,6 @@ public class OrderEditor extends VerticalLayout implements KeyNotifier {
         }
         final boolean persisted = orderDTO.getOrderId() != null;
         this.orderDTO = orderDTO;
-        cancel.setVisible(persisted);
 
         // Bind order properties to similarly named fields
         // Could also use annotation or "manual binding" or programmatically
