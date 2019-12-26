@@ -1,15 +1,18 @@
 package org.gassman.admin.view.user;
 
 import com.vaadin.flow.component.KeyNotifier;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 import org.gassman.admin.client.UserResourceClient;
 import org.gassman.admin.dto.UserDTO;
+
+import java.io.InputStream;
 
 @Route
 public class UsersView extends VerticalLayout implements KeyNotifier {
@@ -20,7 +23,13 @@ public class UsersView extends VerticalLayout implements KeyNotifier {
     private final Button addNewBtn, productBtn;
 
     public UsersView(UserResourceClient userResourceClient, UserEditor userEditor) {
-        add(new Text("GasSMan - List of users"));
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream("static/logo.png");
+        StreamResource resource = new StreamResource("logo.png", () ->  inputStream);
+        Image logo = new Image(resource, "GasSMan Logo");
+        logo.setMaxWidth("370px");
+        add(logo);
+
         this.grid = new Grid<>(UserDTO.class);
         this.userEditor = userEditor;
         this.userResourceClient = userResourceClient;
