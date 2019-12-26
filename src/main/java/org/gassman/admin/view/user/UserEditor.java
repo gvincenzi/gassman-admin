@@ -13,35 +13,42 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.gassman.admin.client.UserResourceClient;
 import org.gassman.admin.dto.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.gassman.admin.view.ButtonLabelConfig;
 
 @SpringComponent
 @UIScope
 public class UserEditor extends VerticalLayout implements KeyNotifier {
-
-    @Autowired
     private final UserResourceClient userResourceClient;
+    private final UserLabelConfig userLabelConfig;
+    private final ButtonLabelConfig buttonLabelConfig;
+
     private UserDTO userDTO;
-
-    /* Fields to edit properties in Customer entity */
-    TextField name = new TextField("First name");
-    TextField surname = new TextField("Last name");
-    TextField mail  = new TextField("Mail");
-    Checkbox active = new Checkbox("is Active");
-
-    /* Action buttons */
-    Button save = new Button("Save", VaadinIcon.CHECK.create());
-    Button reset = new Button("Reset");
-    Button delete = new Button("Delete", VaadinIcon.TRASH.create());
-    HorizontalLayout actions = new HorizontalLayout(save, reset, delete);
-
-    HorizontalLayout data = new HorizontalLayout(name, surname, mail);
 
     Binder<UserDTO> binder = new Binder<>(UserDTO.class);
     private ChangeHandler changeHandler;
 
-    public UserEditor(UserResourceClient userResourceClient) {
+    private TextField name,surname,mail;
+    private Checkbox active;
+    private Button save,reset,delete;
+
+    public UserEditor(UserResourceClient userResourceClient, UserLabelConfig userLabelConfig, ButtonLabelConfig buttonLabelConfig) {
         this.userResourceClient = userResourceClient;
+        this.userLabelConfig = userLabelConfig;
+        this.buttonLabelConfig = buttonLabelConfig;
+
+        /* Fields to edit properties in User entity */
+        name = new TextField(userLabelConfig.getFirstname());
+        surname = new TextField(userLabelConfig.getLastname());
+        mail  = new TextField(userLabelConfig.getMail());
+        active = new Checkbox(userLabelConfig.getActive());
+
+        /* Action buttons */
+        save = new Button(buttonLabelConfig.getSave(), VaadinIcon.CHECK.create());
+        reset = new Button(buttonLabelConfig.getReset());
+        delete = new Button(buttonLabelConfig.getDelete(), VaadinIcon.TRASH.create());
+        HorizontalLayout actions = new HorizontalLayout(save, reset, delete);
+
+        HorizontalLayout data = new HorizontalLayout(name, surname, mail);
 
         add(data, active, actions);
 

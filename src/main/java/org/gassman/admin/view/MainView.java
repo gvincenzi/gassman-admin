@@ -12,7 +12,11 @@ import java.io.InputStream;
 
 @Route
 public class MainView extends VerticalLayout {
-    public MainView() {
+    private ButtonLabelConfig buttonLabelConfig;
+
+    public MainView(ButtonLabelConfig buttonLabelConfig) {
+        this.buttonLabelConfig = buttonLabelConfig;
+
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream("static/logo.png");
         StreamResource resource = new StreamResource("logo.png", () ->  inputStream);
@@ -20,14 +24,14 @@ public class MainView extends VerticalLayout {
         logo.setMaxWidth("370px");
         add(logo);
         Button buttonUser = new Button(
-                "Users management", VaadinIcon.USERS.create());
+                buttonLabelConfig.getUserManagement(), VaadinIcon.USERS.create());
         buttonUser.addClickListener(e ->
                 buttonUser.getUI().ifPresent(ui ->
                         ui.navigate("users"))
         );
 
         Button buttonProduct = new Button(
-                "Products management", VaadinIcon.BOOK_DOLLAR.create());
+                buttonLabelConfig.getProductManagement(), VaadinIcon.BOOK_DOLLAR.create());
         buttonProduct.addClickListener(e ->
                 buttonProduct.getUI().ifPresent(ui ->
                         ui.navigate("products"))

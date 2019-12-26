@@ -17,16 +17,17 @@ import org.gassman.admin.client.ProductResourceClient;
 import org.gassman.admin.component.DateTimePicker;
 import org.gassman.admin.dto.OrderDTO;
 import org.gassman.admin.dto.ProductDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.gassman.admin.view.ButtonLabelConfig;
 
 import java.util.ArrayList;
 
 @SpringComponent
 @UIScope
 public class ProductEditor extends HorizontalLayout implements KeyNotifier {
-
-    @Autowired
     private final ProductResourceClient productResourceClient;
+    private final ProductLabelConfig productLabelConfig;
+    private final OrderLabelConfig orderLabelConfig;
+    private final ButtonLabelConfig buttonLabelConfig;
 
     private ProductDTO productDTO;
 
@@ -34,32 +35,47 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
 
     private OrderEditor orderEditor;
 
-    /* Fields to edit properties in Customer entity */
-    TextField name = new TextField("Name");
-    TextField description = new TextField("Description");
-    TextField unitOfMeasure = new TextField("Unit Of Measure (ex. KG)");
-    NumberField pricePerUnit = new NumberField("Price Per Unit");
-    NumberField availableQuantity = new NumberField("Available Quantity");
-    DateTimePicker deliveryDateTime = new DateTimePicker("Delivery Date");
-    Checkbox active = new Checkbox("is Active");
+    private TextField name, description, unitOfMeasure;
+    private NumberField pricePerUnit, availableQuantity;
+    private DateTimePicker deliveryDateTime;
+    private Checkbox active;
+    private Button save, reset, delete;
 
-    /* Action buttons */
-    Button save = new Button("Save", VaadinIcon.CHECK.create());
-    Button reset = new Button("Reset");
-    Button delete = new Button("Delete", VaadinIcon.TRASH.create());
-
-    Binder<ProductDTO> binder = new Binder<>(ProductDTO.class);
+    private Binder<ProductDTO> binder = new Binder<>(ProductDTO.class);
     private ChangeHandler changeHandler;
 
-    public ProductEditor(ProductResourceClient productResourceClient, OrderEditor orderEditor) {
+    public ProductEditor(ProductResourceClient productResourceClient, OrderEditor orderEditor, ProductLabelConfig productLabelConfig, ButtonLabelConfig buttonLabelConfig, OrderLabelConfig orderLabelConfig) {
         this.productResourceClient = productResourceClient;
+        this.buttonLabelConfig = buttonLabelConfig;
+        this.productLabelConfig = productLabelConfig;
+        this.orderLabelConfig = orderLabelConfig;
         this.orderEditor = orderEditor;
         this.grid = new Grid<>(OrderDTO.class);
+
+        /* Fields to edit properties in Product entity */
+        name = new TextField(productLabelConfig.getName());
+        description = new TextField(productLabelConfig.getDescription());
+        unitOfMeasure = new TextField(productLabelConfig.getUnitOfMeasure());
+        pricePerUnit = new NumberField(productLabelConfig.getPricePerUnit());
+        availableQuantity = new NumberField(productLabelConfig.getAvailableQuantity());
+        deliveryDateTime = new DateTimePicker(productLabelConfig.getDeliveryDateTime());
+        active = new Checkbox(productLabelConfig.getActive());
+
+        /* Action buttons */
+        save = new Button(buttonLabelConfig.getSave(), VaadinIcon.CHECK.create());
+        reset = new Button(buttonLabelConfig.getReset());
+        delete = new Button(buttonLabelConfig.getDelete(), VaadinIcon.TRASH.create());
 
         HorizontalLayout actions = new HorizontalLayout(save, reset, delete);
         VerticalLayout editorFields = new VerticalLayout(name, description, unitOfMeasure, pricePerUnit, availableQuantity, deliveryDateTime, active, actions);
         editorFields.setWidth("30%");
         grid.setColumns("user","quantity","totalToPay","payed","paymentExternalReference","paymentExternalDateTime");
+        grid.getColumnByKey("user").setHeader(orderLabelConfig.getUser());
+        grid.getColumnByKey("quantity").setHeader(orderLabelConfig.getQuantity());
+        grid.getColumnByKey("totalToPay").setHeader(orderLabelConfig.getTotalToPay());
+        grid.getColumnByKey("payed").setHeader(orderLabelConfig.getPayed());
+        grid.getColumnByKey("paymentExternalReference").setHeader(orderLabelConfig.getPaymentExternalReference());
+        grid.getColumnByKey("paymentExternalDateTime").setHeader(orderLabelConfig.getPaymentExternalDateTime());
         grid.setWidth("100%");
 
         // Connect selected Product to editor or hide if none is selected

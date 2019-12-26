@@ -12,3 +12,34 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://localhost:8880/eureka
+
+label:
+  button:
+    userManagement: Users management
+    userNew: New User
+    productManagement: Products management
+    productNew: New Product
+    save: Save
+    reset: Reset
+    delete: Delete
+
+  user:
+    firstname: First name
+    lastname: Last name
+    mail: Mail
+    active: is Active
+  product:
+    name: Name
+    description: Description
+    unitOfMeasure: Unit of Measure
+    pricePerUnit: Price per Unit
+    availableQuantity: Available Quantity
+    deliveryDateTime: Delivery date
+    active: is Active
+  order:
+    user: User
+    quantity: Quantity
+    totalToPay: Total To Pay
+    payed: is Payed
+    paymentExternalReference: Payment External Reference
+    paymentExternalDateTime: Payment External Date
