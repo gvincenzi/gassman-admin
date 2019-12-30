@@ -13,6 +13,7 @@ public class UserDTO {
     private String surname;
     private String mail;
     private Double credit = 0D;
+    private Integer telegramUserId;
     private Boolean active = Boolean.TRUE;
 
     @Override
