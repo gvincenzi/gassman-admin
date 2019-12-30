@@ -36,6 +36,7 @@ label:
     availableQuantity: Available Quantity
     deliveryDateTime: Delivery date
     active: is Active
+    credit: Credit for internal payment system (€)
   order:
     user: User
     quantity: Quantity

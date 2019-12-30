@@ -14,4 +14,5 @@ public class UserLabelConfig {
     private String lastname;
     private String mail;
     private String active;
+    private String credit;
 }

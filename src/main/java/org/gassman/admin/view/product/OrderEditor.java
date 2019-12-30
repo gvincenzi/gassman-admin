@@ -23,7 +23,7 @@ public class OrderEditor extends VerticalLayout implements KeyNotifier {
     private final OrderResourceClient orderResourceClient;
     private OrderDTO orderDTO;
 
-    /* Fields to edit properties in Customer entity */
+    /* Fields to edit properties in Order entity */
     NumberField quantity = new NumberField("Quantity");
     Checkbox payed = new Checkbox("is Payed");
 

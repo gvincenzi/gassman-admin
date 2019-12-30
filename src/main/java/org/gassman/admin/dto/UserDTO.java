@@ -12,10 +12,11 @@ public class UserDTO {
     private String name;
     private String surname;
     private String mail;
+    private Double credit = 0D;
     private Boolean active = Boolean.TRUE;
 
     @Override
     public String toString() {
-        return name + " " + surname + " : " + mail;
+        return name + " " + surname;
     }
 }
