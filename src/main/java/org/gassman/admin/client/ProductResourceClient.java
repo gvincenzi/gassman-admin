@@ -9,7 +9,7 @@ import java.util.List;
 
 @FeignClient("gassman-order-service/products")
 public interface ProductResourceClient {
-    @GetMapping()
+    @GetMapping("/all")
     List<ProductDTO> findAll();
 
     @GetMapping("/{id}")

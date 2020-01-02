@@ -44,3 +44,7 @@ label:
     payed: is Payed
     paymentExternalReference: Payment External Reference
     paymentExternalDateTime: Payment External Date
+
+admin:
+  username: admin
+  password: $2a$10$q3N/aKgnRhogokVQO8BnduFAMbHfv6VzUKI0g3JQdAHhncz7OdTBC

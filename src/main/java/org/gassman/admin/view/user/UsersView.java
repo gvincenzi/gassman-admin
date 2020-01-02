@@ -1,12 +1,14 @@
 package org.gassman.admin.view.user;
 
 import com.vaadin.flow.component.KeyNotifier;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
 import org.gassman.admin.client.UserCreditResourceClient;
@@ -14,11 +16,13 @@ import org.gassman.admin.client.UserResourceClient;
 import org.gassman.admin.dto.UserCreditDTO;
 import org.gassman.admin.dto.UserDTO;
 import org.gassman.admin.view.ButtonLabelConfig;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.InputStream;
 import java.util.List;
 
 @Route
+@PageTitle("GasSMan - User list")
 public class UsersView extends VerticalLayout implements KeyNotifier {
     private final UserResourceClient userResourceClient;
     private final UserCreditResourceClient userCreditResourceClient;
@@ -27,7 +31,7 @@ public class UsersView extends VerticalLayout implements KeyNotifier {
     private final ButtonLabelConfig buttonLabelConfig;
 
     final Grid<UserDTO> grid;
-    private final Button addNewBtn, productBtn;
+    private final Button addNewBtn, productBtn, logoutBtn;
 
     public UsersView(UserResourceClient userResourceClient, UserCreditResourceClient userCreditResourceClient, UserEditor userEditor, UserLabelConfig userLabelConfig, ButtonLabelConfig buttonLabelConfig) {
         this.userEditor = userEditor;
@@ -50,9 +54,15 @@ public class UsersView extends VerticalLayout implements KeyNotifier {
                 productBtn.getUI().ifPresent(ui ->
                         ui.navigate("products"))
         );
+        this.logoutBtn = new Button("Logout", VaadinIcon.EXIT.create());
+        this.logoutBtn.addClickListener(e -> {
+            SecurityContextHolder.clearContext();
+            UI.getCurrent().getPage().setLocation("logout");
+        });
+
 
         // build layout
-        HorizontalLayout actions = new HorizontalLayout(addNewBtn, productBtn);
+        HorizontalLayout actions = new HorizontalLayout(addNewBtn, productBtn, logoutBtn);
         add(actions, grid, userEditor);
 
         grid.setItems(setUserGridItems(userResourceClient));

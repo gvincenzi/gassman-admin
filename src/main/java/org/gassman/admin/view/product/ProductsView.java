@@ -1,21 +1,25 @@
 package org.gassman.admin.view.product;
 
 import com.vaadin.flow.component.KeyNotifier;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
 import org.gassman.admin.client.ProductResourceClient;
 import org.gassman.admin.dto.ProductDTO;
 import org.gassman.admin.view.ButtonLabelConfig;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.InputStream;
 
 @Route
+@PageTitle("GasSMan - Product List")
 public class ProductsView extends VerticalLayout implements KeyNotifier {
     private final ProductResourceClient productResourceClient;
     private final ProductEditor productEditor;
@@ -23,7 +27,7 @@ public class ProductsView extends VerticalLayout implements KeyNotifier {
     private final ButtonLabelConfig buttonLabelConfig;
 
     final Grid<ProductDTO> grid;
-    private final Button addNewBtn, usersBtn;
+    private final Button addNewBtn, usersBtn, logoutBtn;
 
     public ProductsView(ProductResourceClient productResourceClient, ProductEditor productEditor, ProductLabelConfig productLabelConfig, ButtonLabelConfig buttonLabelConfig) {
         this.productEditor = productEditor;
@@ -47,8 +51,14 @@ public class ProductsView extends VerticalLayout implements KeyNotifier {
                         ui.navigate("users"))
         );
 
+        this.logoutBtn = new Button("Logout", VaadinIcon.EXIT.create());
+        this.logoutBtn.addClickListener(e -> {
+            SecurityContextHolder.clearContext();
+            UI.getCurrent().getPage().setLocation("logout");
+        });
+
         // build layout
-        HorizontalLayout actions = new HorizontalLayout(addNewBtn, usersBtn);
+        HorizontalLayout actions = new HorizontalLayout(addNewBtn, usersBtn, logoutBtn);
         add(actions, grid, productEditor);
 
         grid.setItems(productResourceClient.findAll());
