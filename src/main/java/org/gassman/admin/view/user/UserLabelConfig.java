@@ -15,4 +15,8 @@ public class UserLabelConfig {
     private String mail;
     private String active;
     private String credit;
+    private String oldCredit;
+    private String newCredit;
+    private String rechargeUserCreditType;
+    private String rechargeDateTime;
 }

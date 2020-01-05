@@ -28,6 +28,10 @@ label:
     lastname: Last name
     mail: Mail
     active: is Active
+    newCredit: New Credit
+    oldCredit: Old Credit
+    rechargeUserCreditType: Recharge Type
+    rechargeDateTime: Recharge DateTime
   product:
     name: Name
     description: Description

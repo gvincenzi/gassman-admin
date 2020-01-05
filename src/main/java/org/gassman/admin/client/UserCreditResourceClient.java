@@ -1,5 +1,6 @@
 package org.gassman.admin.client;
 
+import org.gassman.admin.dto.RechargeUserCreditLogDTO;
 import org.gassman.admin.dto.UserCreditDTO;
 import org.gassman.admin.dto.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -21,4 +22,7 @@ public interface UserCreditResourceClient {
 
     @PostMapping("/{additionalCredit}")
     UserCreditDTO newCredit(@RequestBody UserDTO userDTO, @PathVariable("additionalCredit") BigDecimal additionalCredit);
+
+    @GetMapping("/{userId}/log")
+    List<RechargeUserCreditLogDTO> findRechargeUserCreditLogByUserId(@PathVariable("userId") Long userId);
 }

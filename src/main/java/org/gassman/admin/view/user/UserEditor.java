@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyNotifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -14,19 +15,23 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.gassman.admin.client.UserCreditResourceClient;
 import org.gassman.admin.client.UserResourceClient;
+import org.gassman.admin.dto.RechargeUserCreditLogDTO;
 import org.gassman.admin.dto.UserCreditDTO;
 import org.gassman.admin.dto.UserDTO;
 import org.gassman.admin.view.ButtonLabelConfig;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 @SpringComponent
 @UIScope
-public class UserEditor extends VerticalLayout implements KeyNotifier {
+public class UserEditor extends HorizontalLayout implements KeyNotifier {
     private final UserResourceClient userResourceClient;
     private final UserCreditResourceClient userCreditResourceClient;
     private final UserLabelConfig userLabelConfig;
     private final ButtonLabelConfig buttonLabelConfig;
+
+    private Grid<RechargeUserCreditLogDTO> rechargeUserCreditLogGrid;
 
     private UserDTO userDTO;
 
@@ -50,6 +55,7 @@ public class UserEditor extends VerticalLayout implements KeyNotifier {
         mail  = new TextField(userLabelConfig.getMail());
         active = new Checkbox(userLabelConfig.getActive());
         credit  = new NumberField(userLabelConfig.getCredit());
+        HorizontalLayout data = new HorizontalLayout(name, surname, mail, credit);
 
         /* Action buttons */
         save = new Button(buttonLabelConfig.getSave(), VaadinIcon.CHECK.create());
@@ -57,9 +63,17 @@ public class UserEditor extends VerticalLayout implements KeyNotifier {
         delete = new Button(buttonLabelConfig.getDelete(), VaadinIcon.TRASH.create());
         HorizontalLayout actions = new HorizontalLayout(save, reset, delete);
 
-        HorizontalLayout data = new HorizontalLayout(name, surname, mail, credit);
+        VerticalLayout userEditor = new VerticalLayout(data, active, actions);
 
-        add(data, active, actions);
+        this.rechargeUserCreditLogGrid = new Grid<>(RechargeUserCreditLogDTO.class);
+        rechargeUserCreditLogGrid.setColumns("oldCredit","newCredit","rechargeUserCreditType","rechargeDateTime");
+        rechargeUserCreditLogGrid.getColumnByKey("oldCredit").setHeader(userLabelConfig.getOldCredit());
+        rechargeUserCreditLogGrid.getColumnByKey("newCredit").setHeader(userLabelConfig.getNewCredit());
+        rechargeUserCreditLogGrid.getColumnByKey("rechargeUserCreditType").setHeader(userLabelConfig.getRechargeUserCreditType());
+        rechargeUserCreditLogGrid.getColumnByKey("rechargeDateTime").setHeader(userLabelConfig.getRechargeDateTime());
+        rechargeUserCreditLogGrid.setWidthFull();
+        this.setWidthFull();
+        add(userEditor,rechargeUserCreditLogGrid);
 
         // bind using naming convention
         binder.bindInstanceFields(this);
@@ -113,9 +127,11 @@ public class UserEditor extends VerticalLayout implements KeyNotifier {
             if(userCreditDTO != null){
                 this.userDTO.setCredit(userCreditDTO.getCredit());
             }
+            rechargeUserCreditLogGrid.setItems(userCreditResourceClient.findRechargeUserCreditLogByUserId(this.userDTO.getId()));
         }
         else {
             this.userDTO = userDTO;
+            rechargeUserCreditLogGrid.setItems(new ArrayList(0));
         }
         reset.setVisible(persisted);
 
