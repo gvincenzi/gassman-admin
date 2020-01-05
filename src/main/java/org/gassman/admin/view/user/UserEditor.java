@@ -88,10 +88,10 @@ public class UserEditor extends VerticalLayout implements KeyNotifier {
         final boolean persisted = userDTO.getId() != null;
         if (persisted) {
             userResourceClient.updateUser(userDTO.getId(), userDTO);
-            userCreditResourceClient.newCredit(userDTO.getId(), new BigDecimal(userDTO.getCredit()));
+            userCreditResourceClient.newCredit(userDTO, new BigDecimal(userDTO.getCredit()));
         } else {
             userDTO = userResourceClient.addUser(userDTO);
-            userCreditResourceClient.newCredit(userDTO.getId(), new BigDecimal(userDTO.getCredit()));
+            userCreditResourceClient.newCredit(userDTO, new BigDecimal(userDTO.getCredit()));
         }
         changeHandler.onChange();
     }

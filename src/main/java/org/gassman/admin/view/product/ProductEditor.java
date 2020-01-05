@@ -69,11 +69,11 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
         HorizontalLayout actions = new HorizontalLayout(save, reset, delete);
         VerticalLayout editorFields = new VerticalLayout(name, description, unitOfMeasure, pricePerUnit, availableQuantity, deliveryDateTime, active, actions);
         editorFields.setWidth("30%");
-        grid.setColumns("user","quantity","totalToPay","payed","paymentExternalReference","paymentExternalDateTime");
+        grid.setColumns("user","quantity","totalToPay","paid","paymentExternalReference","paymentExternalDateTime");
         grid.getColumnByKey("user").setHeader(orderLabelConfig.getUser());
         grid.getColumnByKey("quantity").setHeader(orderLabelConfig.getQuantity());
         grid.getColumnByKey("totalToPay").setHeader(orderLabelConfig.getTotalToPay());
-        grid.getColumnByKey("payed").setHeader(orderLabelConfig.getPayed());
+        grid.getColumnByKey("paid").setHeader(orderLabelConfig.getPaid());
         grid.getColumnByKey("paymentExternalReference").setHeader(orderLabelConfig.getPaymentExternalReference());
         grid.getColumnByKey("paymentExternalDateTime").setHeader(orderLabelConfig.getPaymentExternalDateTime());
         grid.setWidth("100%");

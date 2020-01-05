@@ -13,32 +13,39 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.gassman.admin.client.OrderResourceClient;
 import org.gassman.admin.dto.OrderDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.gassman.admin.view.ButtonLabelConfig;
 
 @SpringComponent
 @UIScope
 public class OrderEditor extends VerticalLayout implements KeyNotifier {
-
-    @Autowired
     private final OrderResourceClient orderResourceClient;
+    private final OrderLabelConfig orderLabelConfig;
+    private final ButtonLabelConfig buttonLabelConfig;
     private OrderDTO orderDTO;
 
     /* Fields to edit properties in Order entity */
-    NumberField quantity = new NumberField("Quantity");
-    Checkbox payed = new Checkbox("is Payed");
+    NumberField quantity;
+    Checkbox paid;
 
     /* Action buttons */
-    Button save = new Button("Save", VaadinIcon.CHECK.create());
-    Button delete = new Button("Delete", VaadinIcon.TRASH.create());
-    HorizontalLayout actions = new HorizontalLayout(save, delete);
+    Button save,delete;
 
     Binder<OrderDTO> binder = new Binder<>(OrderDTO.class);
     private ChangeHandler changeHandler;
 
-    public OrderEditor(OrderResourceClient orderResourceClient) {
+    public OrderEditor(OrderResourceClient orderResourceClient, OrderLabelConfig orderLabelConfig, ButtonLabelConfig buttonLabelConfig) {
         this.orderResourceClient = orderResourceClient;
+        this.orderLabelConfig = orderLabelConfig;
+        this.buttonLabelConfig = buttonLabelConfig;
 
-        add(quantity, payed, actions);
+        quantity = new NumberField(orderLabelConfig.getQuantity());
+        paid = new Checkbox(orderLabelConfig.getPaid());
+        save = new Button(buttonLabelConfig.getSave(), VaadinIcon.CHECK.create());
+        delete = new Button(buttonLabelConfig.getDelete(), VaadinIcon.TRASH.create());
+
+        HorizontalLayout actions = new HorizontalLayout(save, delete);
+
+        add(quantity, paid, actions);
 
         // bind using naming convention
         binder.bindInstanceFields(this);

@@ -13,7 +13,7 @@ public class OrderLabelConfig {
     private String user;
     private String quantity;
     private String totalToPay;
-    private String payed;
+    private String paid;
     private String paymentExternalReference;
     private String paymentExternalDateTime;
 }

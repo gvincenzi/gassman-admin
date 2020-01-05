@@ -16,7 +16,7 @@ public class OrderDTO {
     @Getter(AccessLevel.NONE)
     private String totalToPay;
     private ProductDTO product;
-    private Boolean payed = Boolean.FALSE;
+    private Boolean paid = Boolean.FALSE;
     private String paymentExternalReference;
     private LocalDateTime paymentExternalDateTime;
 

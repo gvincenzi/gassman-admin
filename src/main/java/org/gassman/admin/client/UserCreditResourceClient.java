@@ -1,10 +1,12 @@
 package org.gassman.admin.client;
 
 import org.gassman.admin.dto.UserCreditDTO;
+import org.gassman.admin.dto.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,6 +19,6 @@ public interface UserCreditResourceClient {
     @GetMapping("/{userId}")
     UserCreditDTO findById(@PathVariable("userId") Long userId);
 
-    @PutMapping("/{userId}/{additionalCredit}")
-    UserCreditDTO newCredit(@PathVariable("userId") Long userId, @PathVariable("additionalCredit") BigDecimal additionalCredit);
+    @PostMapping("/{additionalCredit}")
+    UserCreditDTO newCredit(@RequestBody UserDTO userDTO, @PathVariable("additionalCredit") BigDecimal additionalCredit);
 }

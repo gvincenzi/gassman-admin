@@ -41,7 +41,7 @@ label:
     user: User
     quantity: Quantity
     totalToPay: Total To Pay
-    payed: is Payed
+    paid: Paid
     paymentExternalReference: Payment External Reference
     paymentExternalDateTime: Payment External Date
 
