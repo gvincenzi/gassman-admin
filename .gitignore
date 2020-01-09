@@ -5,6 +5,7 @@ node_modules/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+package-lock.json
 
 ### STS ###
 .apt_generated
