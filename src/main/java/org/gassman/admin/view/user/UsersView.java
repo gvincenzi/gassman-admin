@@ -1,5 +1,6 @@
 package org.gassman.admin.view.user;
 
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.KeyNotifier;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -8,6 +9,7 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
@@ -15,12 +17,14 @@ import org.gassman.admin.client.UserCreditResourceClient;
 import org.gassman.admin.client.UserResourceClient;
 import org.gassman.admin.dto.UserCreditDTO;
 import org.gassman.admin.dto.UserDTO;
+import org.gassman.admin.listener.MQListener;
 import org.gassman.admin.view.ButtonLabelConfig;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.InputStream;
 import java.util.List;
 
+@Push
 @Route
 @PageTitle("GasSMan - User list")
 public class UsersView extends VerticalLayout implements KeyNotifier {
@@ -29,16 +33,17 @@ public class UsersView extends VerticalLayout implements KeyNotifier {
     private final UserEditor userEditor;
     private final UserLabelConfig userLabelConfig;
     private final ButtonLabelConfig buttonLabelConfig;
-
+    private final MQListener mqListener;
     final Grid<UserDTO> grid;
     private final Button addNewBtn, productBtn, logoutBtn;
 
-    public UsersView(UserResourceClient userResourceClient, UserCreditResourceClient userCreditResourceClient, UserEditor userEditor, UserLabelConfig userLabelConfig, ButtonLabelConfig buttonLabelConfig) {
+    public UsersView(UserResourceClient userResourceClient, UserCreditResourceClient userCreditResourceClient, UserEditor userEditor, UserLabelConfig userLabelConfig, ButtonLabelConfig buttonLabelConfig, MQListener mqListener) {
         this.userEditor = userEditor;
         this.userResourceClient = userResourceClient;
         this.userCreditResourceClient = userCreditResourceClient;
         this.userLabelConfig = userLabelConfig;
         this.buttonLabelConfig = buttonLabelConfig;
+        this.mqListener = mqListener;
 
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream("static/logo.png");
@@ -99,5 +104,14 @@ public class UsersView extends VerticalLayout implements KeyNotifier {
             }
         }
         return userDTOS;
+    }
+
+    public void refreshUserGrid(){
+        grid.setItems(setUserGridItems(userResourceClient));
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        this.mqListener.setUIAndUsersViewToUpdate(attachEvent.getUI(), this);
     }
 }

@@ -4,6 +4,14 @@ server:
 spring:
   application:
     name: gassman-admin
+  rabbitmq:
+    addresses: amqp://tmwtbfjj:fXhbTFsfVvw_hIwTshosVKn4IxFpV69X@stingray.rmq.cloudamqp.com/tmwtbfjj
+  cloud:
+    stream:
+      bindings:
+        userRegistrationChannel:
+          destination: gassman-user-registration
+
 eureka:
   instance:
     hostname: localhost
