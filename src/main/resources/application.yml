@@ -11,6 +11,10 @@ spring:
       bindings:
         userRegistrationChannel:
           destination: gassman-user-registration
+        orderPaymentChannel:
+          destination: gassman-order-registration
+        orderPaymentConfirmationChannel:
+          destination: gassman-order-payment-confirmation
 
 eureka:
   instance:
