@@ -1,5 +1,6 @@
 package org.gassman.admin.view.product;
 
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.KeyNotifier;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -8,16 +9,19 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
 import org.gassman.admin.client.ProductResourceClient;
 import org.gassman.admin.dto.ProductDTO;
+import org.gassman.admin.listener.MQListener;
 import org.gassman.admin.view.ButtonLabelConfig;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.InputStream;
 
+@Push
 @Route
 @PageTitle("GasSMan - Product List")
 public class ProductsView extends VerticalLayout implements KeyNotifier {
@@ -26,14 +30,16 @@ public class ProductsView extends VerticalLayout implements KeyNotifier {
     private final ProductLabelConfig productLabelConfig;
     private final ButtonLabelConfig buttonLabelConfig;
 
+    private final MQListener mqListener;
     final Grid<ProductDTO> grid;
     private final Button addNewBtn, usersBtn, logoutBtn;
 
-    public ProductsView(ProductResourceClient productResourceClient, ProductEditor productEditor, ProductLabelConfig productLabelConfig, ButtonLabelConfig buttonLabelConfig) {
+    public ProductsView(ProductResourceClient productResourceClient, ProductEditor productEditor, ProductLabelConfig productLabelConfig, ButtonLabelConfig buttonLabelConfig, MQListener mqListener) {
         this.productEditor = productEditor;
         this.productResourceClient = productResourceClient;
         this.buttonLabelConfig = buttonLabelConfig;
         this.productLabelConfig = productLabelConfig;
+        this.mqListener = mqListener;
 
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream("static/logo.png");
@@ -86,5 +92,14 @@ public class ProductsView extends VerticalLayout implements KeyNotifier {
             productEditor.setVisible(false);
             grid.setItems(productResourceClient.findAll());
         });
+    }
+
+    public void refreshUserGrid(){
+        grid.setItems(productResourceClient.findAll());
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        this.mqListener.setUIAndProductsViewToUpdate(attachEvent.getUI(), this);
     }
 }
