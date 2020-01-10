@@ -63,7 +63,8 @@ public class UserEditor extends HorizontalLayout implements KeyNotifier {
         delete = new Button(buttonLabelConfig.getDelete(), VaadinIcon.TRASH.create());
         HorizontalLayout actions = new HorizontalLayout(save, reset, delete);
 
-        VerticalLayout userEditor = new VerticalLayout(data, active, actions);
+        // VerticalLayout userEditor = new VerticalLayout(data, active, actions);
+        VerticalLayout userEditor = new VerticalLayout(data, actions);
 
         this.rechargeUserCreditLogGrid = new Grid<>(RechargeUserCreditLogDTO.class);
         rechargeUserCreditLogGrid.setColumns("oldCredit","newCredit","rechargeUserCreditType","rechargeDateTime");

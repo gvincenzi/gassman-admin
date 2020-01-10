@@ -45,6 +45,13 @@ public class MQListener {
         }
     }
 
+    @StreamListener(target = MQBinding.USER_CANCELLATION)
+    public void processUserCancellation(UserDTO msg) {
+        if(usersView != null){
+            ui.access(()->usersView.refreshUserGrid());
+        }
+    }
+
     public void setUIAndProductsViewToUpdate(UI ui, ProductsView productsView) {
         this.ui = ui;
         this.productsView = productsView;

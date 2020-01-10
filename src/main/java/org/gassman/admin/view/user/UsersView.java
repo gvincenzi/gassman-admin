@@ -73,11 +73,11 @@ public class UsersView extends VerticalLayout implements KeyNotifier {
         grid.setItems(setUserGridItems(userResourceClient));
         grid.setHeight("300px");
 
-        grid.setColumns("name","surname","mail","active","credit");
+        grid.setColumns("name","surname","mail","credit");
         grid.getColumnByKey("name").setHeader(userLabelConfig.getFirstname());
         grid.getColumnByKey("surname").setHeader(userLabelConfig.getLastname());
         grid.getColumnByKey("mail").setHeader(userLabelConfig.getMail());
-        grid.getColumnByKey("active").setHeader(userLabelConfig.getActive());
+        // grid.getColumnByKey("active").setHeader(userLabelConfig.getActive());
         grid.getColumnByKey("credit").setHeader(userLabelConfig.getCredit());
 
         // Connect selected User to editor or hide if none is selected
@@ -96,7 +96,7 @@ public class UsersView extends VerticalLayout implements KeyNotifier {
     }
 
     private List<UserDTO> setUserGridItems(UserResourceClient userResourceClient) {
-        List<UserDTO> userDTOS = userResourceClient.findAll();
+        List<UserDTO> userDTOS = userResourceClient.findByActiveTrue();
         for (UserDTO userDTO: userDTOS) {
             UserCreditDTO userCreditDTO = userCreditResourceClient.findById(userDTO.getId());
             if(userCreditDTO != null && userCreditDTO.getCredit() != null){
@@ -107,7 +107,16 @@ public class UsersView extends VerticalLayout implements KeyNotifier {
     }
 
     public void refreshUserGrid(){
+        UserDTO userDTOSelected = null;
+        if(!grid.getSelectedItems().isEmpty()) {
+            userDTOSelected = grid.getSelectedItems().iterator().next();
+        }
+
         grid.setItems(setUserGridItems(userResourceClient));
+
+        if(userDTOSelected != null){
+            grid.select(userDTOSelected);
+        }
     }
 
     @Override

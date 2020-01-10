@@ -8,6 +8,9 @@ import java.util.List;
 
 @FeignClient("gassman-order-service/users")
 public interface UserResourceClient {
+    @GetMapping("/")
+    List<UserDTO> findByActiveTrue();
+
     @GetMapping("/all")
     List<UserDTO> findAll();
 
