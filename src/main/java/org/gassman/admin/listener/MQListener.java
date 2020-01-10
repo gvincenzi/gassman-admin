@@ -27,12 +27,14 @@ public class MQListener {
 
     @StreamListener(target = MQBinding.USER_ORDER)
     public void processUserOrderRegistration(OrderDTO msg) {
-        ui.access(()->productsView.refreshUserGrid());
+        ui.access(()->productsView.refreshProductGrid());
+        ui.access(()->productsView.refreshProductOrdersGrid(msg.getProduct().getProductId()));
     }
 
     @StreamListener(target = MQBinding.ORDER_PAYMENT_CONFIRMATION)
     public void processOrderPaymentConfirmation(OrderDTO msg) {
         ui.access(()->usersView.refreshUserGrid());
+        ui.access(()->productsView.refreshProductOrdersGrid(msg.getProduct().getProductId()));
     }
 
     public void setUIAndProductsViewToUpdate(UI ui, ProductsView productsView) {

@@ -94,8 +94,20 @@ public class ProductsView extends VerticalLayout implements KeyNotifier {
         });
     }
 
-    public void refreshUserGrid(){
+    public void refreshProductGrid(){
+        ProductDTO productDTOSelected = null;
+        if(!grid.getSelectedItems().isEmpty()) {
+            productDTOSelected = grid.getSelectedItems().iterator().next();
+        }
         grid.setItems(productResourceClient.findAll());
+
+        if(productDTOSelected != null){
+            grid.select(productDTOSelected);
+        }
+    }
+
+    public void refreshProductOrdersGrid(Long productId){
+        productEditor.refreshProductOrdersGrid(productId);
     }
 
     @Override
