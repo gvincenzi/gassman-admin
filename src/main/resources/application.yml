@@ -42,6 +42,7 @@ label:
     lastname: Last name
     mail: Mail
     active: is Active
+    credit: Credit for internal payment system (€)
     newCredit: New Credit
     oldCredit: Old Credit
     rechargeUserCreditType: Recharge Type
@@ -54,7 +55,7 @@ label:
     availableQuantity: Available Quantity
     deliveryDateTime: Delivery date
     active: is Active
-    credit: Credit for internal payment system (€)
+    showHistory: Show past products
   order:
     user: User
     quantity: Quantity

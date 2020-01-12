@@ -4,6 +4,7 @@ import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.KeyNotifier;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -33,6 +34,7 @@ public class ProductsView extends VerticalLayout implements KeyNotifier {
     private final MQListener mqListener;
     final Grid<ProductDTO> grid;
     private final Button addNewBtn, usersBtn, logoutBtn;
+    private final Checkbox showHistory;
 
     public ProductsView(ProductResourceClient productResourceClient, ProductEditor productEditor, ProductLabelConfig productLabelConfig, ButtonLabelConfig buttonLabelConfig, MQListener mqListener) {
         this.productEditor = productEditor;
@@ -47,6 +49,11 @@ public class ProductsView extends VerticalLayout implements KeyNotifier {
         Image logo = new Image(resource, "GasSMan Logo");
         logo.setMaxWidth("370px");
         add(logo);
+
+        this.showHistory = new Checkbox(productLabelConfig.getShowHistory());
+        this.showHistory.addClickListener(e -> {
+            refreshProductGrid(productResourceClient);
+        });
 
         this.grid = new Grid<>(ProductDTO.class);
 
@@ -65,9 +72,9 @@ public class ProductsView extends VerticalLayout implements KeyNotifier {
 
         // build layout
         HorizontalLayout actions = new HorizontalLayout(addNewBtn, usersBtn, logoutBtn);
-        add(actions, grid, productEditor);
+        add(actions, showHistory, grid, productEditor);
 
-        grid.setItems(productResourceClient.findAll());
+        refreshProductGrid(productResourceClient);
         grid.setHeight("300px");
 
         grid.setColumns("name","description","unitOfMeasure","pricePerUnit","availableQuantity","deliveryDateTime","active");
@@ -90,8 +97,16 @@ public class ProductsView extends VerticalLayout implements KeyNotifier {
         // Listen changes made by the editor, refresh data from backend
         productEditor.setChangeHandler(() -> {
             productEditor.setVisible(false);
-            grid.setItems(productResourceClient.findAll());
+            refreshProductGrid(productResourceClient);
         });
+    }
+
+    private void refreshProductGrid(ProductResourceClient productResourceClient) {
+        if(this.showHistory.getValue()){
+            grid.setItems(productResourceClient.getHistory());
+        } else {
+            grid.setItems(productResourceClient.findAll());
+        }
     }
 
     public void refreshProductGrid(){
@@ -99,7 +114,7 @@ public class ProductsView extends VerticalLayout implements KeyNotifier {
         if(!grid.getSelectedItems().isEmpty()) {
             productDTOSelected = grid.getSelectedItems().iterator().next();
         }
-        grid.setItems(productResourceClient.findAll());
+        refreshProductGrid(productResourceClient);
 
         if(productDTOSelected != null){
             grid.select(productDTOSelected);

@@ -17,4 +17,5 @@ public class ProductLabelConfig {
     private String availableQuantity;
     private String deliveryDateTime;
     private String active;
+    private String showHistory;
 }
