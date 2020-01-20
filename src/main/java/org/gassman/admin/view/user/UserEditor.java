@@ -39,7 +39,7 @@ public class UserEditor extends HorizontalLayout implements KeyNotifier {
     private ChangeHandler changeHandler;
 
     private TextField name,surname,mail;
-    private Checkbox active;
+    private Checkbox administrator;
     private Button save,reset,delete;
     NumberField credit;
 
@@ -53,7 +53,7 @@ public class UserEditor extends HorizontalLayout implements KeyNotifier {
         name = new TextField(userLabelConfig.getFirstname());
         surname = new TextField(userLabelConfig.getLastname());
         mail  = new TextField(userLabelConfig.getMail());
-        active = new Checkbox(userLabelConfig.getActive());
+        administrator = new Checkbox(userLabelConfig.getAdministrator());
         credit  = new NumberField(userLabelConfig.getCredit());
         HorizontalLayout data = new HorizontalLayout(name, surname, mail, credit);
 
@@ -63,8 +63,7 @@ public class UserEditor extends HorizontalLayout implements KeyNotifier {
         delete = new Button(buttonLabelConfig.getDelete(), VaadinIcon.TRASH.create());
         HorizontalLayout actions = new HorizontalLayout(save, reset, delete);
 
-        // VerticalLayout userEditor = new VerticalLayout(data, active, actions);
-        VerticalLayout userEditor = new VerticalLayout(data, actions);
+        VerticalLayout userEditor = new VerticalLayout(data, administrator, actions);
 
         this.rechargeUserCreditLogGrid = new Grid<>(RechargeUserCreditLogDTO.class);
         rechargeUserCreditLogGrid.setColumns("oldCredit","newCredit","rechargeUserCreditType","rechargeDateTime");

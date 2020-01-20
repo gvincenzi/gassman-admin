@@ -73,12 +73,13 @@ public class UsersView extends VerticalLayout implements KeyNotifier {
         grid.setItems(setUserGridItems(userResourceClient));
         grid.setHeight("300px");
 
-        grid.setColumns("name","surname","mail","credit");
+        grid.setColumns("name","surname","mail","credit","administrator");
         grid.getColumnByKey("name").setHeader(userLabelConfig.getFirstname());
         grid.getColumnByKey("surname").setHeader(userLabelConfig.getLastname());
         grid.getColumnByKey("mail").setHeader(userLabelConfig.getMail());
         // grid.getColumnByKey("active").setHeader(userLabelConfig.getActive());
         grid.getColumnByKey("credit").setHeader(userLabelConfig.getCredit());
+        grid.getColumnByKey("administrator").setHeader(userLabelConfig.getAdministrator());
 
         // Connect selected User to editor or hide if none is selected
         grid.asSingleSelect().addValueChangeListener(e -> {

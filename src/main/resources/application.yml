@@ -47,6 +47,7 @@ label:
     oldCredit: Old Credit
     rechargeUserCreditType: Recharge Type
     rechargeDateTime: Recharge DateTime
+    administrator: Administrator
   product:
     name: Name
     description: Description

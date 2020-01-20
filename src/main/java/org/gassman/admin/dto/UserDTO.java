@@ -15,6 +15,7 @@ public class UserDTO {
     private Double credit = 0D;
     private Integer telegramUserId;
     private Boolean active = Boolean.TRUE;
+    private Boolean administrator = Boolean.FALSE;
 
     @Override
     public String toString() {

@@ -19,4 +19,5 @@ public class UserLabelConfig {
     private String newCredit;
     private String rechargeUserCreditType;
     private String rechargeDateTime;
+    private String administrator;
 }
