@@ -48,6 +48,7 @@ label:
     rechargeUserCreditType: Recharge Type
     rechargeDateTime: Recharge DateTime
     administrator: Administrator
+    cashFund: Cash fund
   product:
     name: Name
     description: Description
@@ -64,6 +65,7 @@ label:
     paid: Paid
     paymentExternalReference: Payment External Reference
     paymentExternalDateTime: Payment External Date
+    totalAmountSupplier: Total amount due to supplier
 
 admin:
   username: admin

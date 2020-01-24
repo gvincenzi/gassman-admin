@@ -2,6 +2,7 @@ package org.gassman.admin.view.product;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyNotifier;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,7 +20,9 @@ import org.gassman.admin.dto.OrderDTO;
 import org.gassman.admin.dto.ProductDTO;
 import org.gassman.admin.view.ButtonLabelConfig;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 @SpringComponent
 @UIScope
@@ -40,6 +43,7 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
     private DateTimePicker deliveryDateTime;
     private Checkbox active;
     private Button save, reset, delete;
+    private Text text;
 
     private Binder<ProductDTO> binder = new Binder<>(ProductDTO.class);
     private ChangeHandler changeHandler;
@@ -51,6 +55,7 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
         this.orderLabelConfig = orderLabelConfig;
         this.orderEditor = orderEditor;
         this.grid = new Grid<>(OrderDTO.class);
+        text = new Text("");
 
         /* Fields to edit properties in Product entity */
         name = new TextField(productLabelConfig.getName());
@@ -84,13 +89,15 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
         });
 
         VerticalLayout gridOrders = new VerticalLayout();
-        gridOrders.add(grid,orderEditor);
+        gridOrders.add(grid,text,orderEditor);
         gridOrders.setHeightFull();
 
         // Listen changes made by the editor, refresh data from backend
         orderEditor.setChangeHandler(() -> {
             orderEditor.setVisible(false);
             grid.setItems(productResourceClient.findProductOrders(productDTO.getProductId()));
+            text.setText(String.format("%s : %s €",orderLabelConfig.getTotalAmountSupplier(),computeTotalAmountSupplier().toString()));
+
             changeHandler.onChange();
         });
 
@@ -113,6 +120,17 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
         delete.addClickListener(e -> delete());
         reset.addClickListener(e -> editProduct(productDTO));
         setVisible(false);
+    }
+
+    private BigDecimal computeTotalAmountSupplier() {
+        BigDecimal total = BigDecimal.ZERO;
+        if(productResourceClient != null && productDTO != null) {
+            List<OrderDTO> productOrders = productResourceClient.findProductOrders(productDTO.getProductId());
+            for (OrderDTO order : productOrders) {
+                total = total.add(BigDecimal.valueOf(order.getQuantity() * (order.getProduct().getPricePerUnit())));
+            }
+        }
+        return total;
     }
 
     void delete() {
@@ -148,6 +166,9 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
             grid.setItems(new ArrayList(0));
             this.productDTO = productDTO;
         }
+
+        text.setText(String.format("%s : %s €",orderLabelConfig.getTotalAmountSupplier(),computeTotalAmountSupplier().toString()));
+
         reset.setVisible(persisted);
 
         // Bind customer properties to similarly named fields
@@ -172,4 +193,6 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
             grid.setItems(productResourceClient.findProductOrders(productDTO.getProductId()));
         }
     }
+
+
 }

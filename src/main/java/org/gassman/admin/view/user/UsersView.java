@@ -2,6 +2,7 @@ package org.gassman.admin.view.user;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.KeyNotifier;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -68,7 +69,9 @@ public class UsersView extends VerticalLayout implements KeyNotifier {
 
         // build layout
         HorizontalLayout actions = new HorizontalLayout(addNewBtn, productBtn, logoutBtn);
-        add(actions, grid, userEditor);
+
+        Text text = new Text(String.format("%s : %s €",userLabelConfig.getCashFund(),userCreditResourceClient.totalUserCredit().toString()));
+        add(actions, grid, text, userEditor);
 
         grid.setItems(setUserGridItems(userResourceClient));
         grid.setHeight("300px");

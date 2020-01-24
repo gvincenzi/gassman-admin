@@ -20,4 +20,5 @@ public class UserLabelConfig {
     private String rechargeUserCreditType;
     private String rechargeDateTime;
     private String administrator;
+    private String cashFund;
 }

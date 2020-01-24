@@ -16,4 +16,5 @@ public class OrderLabelConfig {
     private String paid;
     private String paymentExternalReference;
     private String paymentExternalDateTime;
+    private String totalAmountSupplier;
 }

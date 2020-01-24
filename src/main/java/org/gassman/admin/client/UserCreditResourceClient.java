@@ -25,4 +25,7 @@ public interface UserCreditResourceClient {
 
     @GetMapping("/{userId}/log")
     List<RechargeUserCreditLogDTO> findRechargeUserCreditLogByUserId(@PathVariable("userId") Long userId);
+
+    @GetMapping("/totalUserCredit")
+    BigDecimal totalUserCredit();
 }
