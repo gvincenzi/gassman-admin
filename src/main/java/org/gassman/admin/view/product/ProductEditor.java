@@ -124,7 +124,7 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
 
     private BigDecimal computeTotalAmountSupplier() {
         BigDecimal total = BigDecimal.ZERO;
-        if(productResourceClient != null && productDTO != null) {
+        if(productResourceClient != null && productDTO != null && productDTO.getProductId() != null) {
             List<OrderDTO> productOrders = productResourceClient.findProductOrders(productDTO.getProductId());
             for (OrderDTO order : productOrders) {
                 total = total.add(BigDecimal.valueOf(order.getQuantity() * (order.getProduct().getPricePerUnit())));
