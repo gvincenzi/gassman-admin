@@ -19,6 +19,7 @@ import org.gassman.admin.component.DateTimePicker;
 import org.gassman.admin.dto.OrderDTO;
 import org.gassman.admin.dto.ProductDTO;
 import org.gassman.admin.view.ButtonLabelConfig;
+import org.vaadin.olli.ClipboardHelper;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -42,8 +43,9 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
     private NumberField pricePerUnit, availableQuantity;
     private DateTimePicker deliveryDateTime;
     private Checkbox active;
-    private Button save, reset, delete;
+    private Button save, reset, delete, supplierBtn;
     private Text text;
+    private ClipboardHelper clipboardHelper;
 
     private Binder<ProductDTO> binder = new Binder<>(ProductDTO.class);
     private ChangeHandler changeHandler;
@@ -70,9 +72,11 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
         save = new Button(buttonLabelConfig.getSave(), VaadinIcon.CHECK.create());
         reset = new Button(buttonLabelConfig.getReset());
         delete = new Button(buttonLabelConfig.getDelete(), VaadinIcon.TRASH.create());
+        supplierBtn = new Button(buttonLabelConfig.getSupplier(), VaadinIcon.COPY.create());
+        clipboardHelper = new ClipboardHelper("", this.supplierBtn);
 
         HorizontalLayout actions = new HorizontalLayout(save, reset, delete);
-        VerticalLayout editorFields = new VerticalLayout(name, description, unitOfMeasure, pricePerUnit, availableQuantity, deliveryDateTime, active, actions);
+        VerticalLayout editorFields = new VerticalLayout(clipboardHelper, name, description, unitOfMeasure, pricePerUnit, availableQuantity, deliveryDateTime, active, actions);
         editorFields.setWidth("30%");
         grid.setColumns("user","quantity","totalToPay","paid","paymentExternalReference","paymentExternalDateTime");
         grid.getColumnByKey("user").setHeader(orderLabelConfig.getUser());
@@ -175,6 +179,10 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
         // Could also use annotation or "manual binding" or programmatically
         // moving values from fields to entities before saving
         binder.setBean(this.productDTO);
+
+        if(clipboardHelper != null && this.productDTO != null && this.productDTO.getProductId() != null){
+            clipboardHelper.setContent("http://localhost:8881/gassman-order-service/public/products/"+this.productDTO.getProductId());
+        }
 
         setVisible(true);
 

@@ -17,6 +17,8 @@ spring:
           destination: gassman-order-payment-confirmation
         userCancellationChannel:
           destination: gassman-user-cancellation
+  banner:
+    location: gassman.txt
 
 eureka:
   instance:
@@ -43,6 +45,7 @@ label:
     save: Save
     reset: Reset
     delete: Delete
+    supplier: Click to copy to clipboard the supplier link
 
   user:
     firstname: First name
@@ -64,6 +67,7 @@ label:
     availableQuantity: Available Quantity
     deliveryDateTime: Delivery date
     active: is Active
+    bookedQuantity: Booked quantity
     showHistory: Show past products
   order:
     user: User

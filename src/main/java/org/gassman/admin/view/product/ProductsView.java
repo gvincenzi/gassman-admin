@@ -77,13 +77,14 @@ public class ProductsView extends VerticalLayout implements KeyNotifier {
         refreshProductGrid(productResourceClient);
         grid.setHeight("300px");
 
-        grid.setColumns("name","description","unitOfMeasure","pricePerUnit","availableQuantity","deliveryDateTime","active");
+        grid.setColumns("name","description","unitOfMeasure","pricePerUnit","availableQuantity","deliveryDateTime","bookedQuantity","active");
         grid.getColumnByKey("name").setHeader(productLabelConfig.getName());
         grid.getColumnByKey("description").setHeader(productLabelConfig.getDescription());
         grid.getColumnByKey("unitOfMeasure").setHeader(productLabelConfig.getUnitOfMeasure());
         grid.getColumnByKey("pricePerUnit").setHeader(productLabelConfig.getPricePerUnit());
         grid.getColumnByKey("availableQuantity").setHeader(productLabelConfig.getAvailableQuantity());
         grid.getColumnByKey("deliveryDateTime").setHeader(productLabelConfig.getDeliveryDateTime());
+        grid.getColumnByKey("bookedQuantity").setHeader(productLabelConfig.getBookedQuantity());
         grid.getColumnByKey("active").setHeader(productLabelConfig.getActive());
 
         // Connect selected Product to editor or hide if none is selected

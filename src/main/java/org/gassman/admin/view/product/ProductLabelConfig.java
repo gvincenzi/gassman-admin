@@ -18,4 +18,5 @@ public class ProductLabelConfig {
     private String deliveryDateTime;
     private String active;
     private String showHistory;
+    private String bookedQuantity;
 }

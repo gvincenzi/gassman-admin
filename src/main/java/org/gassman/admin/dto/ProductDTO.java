@@ -3,7 +3,6 @@ package org.gassman.admin.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -17,4 +16,5 @@ public class ProductDTO {
     private Double availableQuantity;
     private LocalDateTime deliveryDateTime;
     private Boolean active = Boolean.TRUE;
+    private Integer bookedQuantity;
 }
