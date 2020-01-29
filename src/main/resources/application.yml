@@ -69,6 +69,7 @@ label:
     active: is Active
     bookedQuantity: Booked quantity
     showHistory: Show past products
+    urlOrderPublic: http://localhost:8881/gassman-order-service/public/products/
   order:
     user: User
     quantity: Quantity

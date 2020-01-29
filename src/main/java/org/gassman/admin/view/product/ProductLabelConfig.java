@@ -19,4 +19,5 @@ public class ProductLabelConfig {
     private String active;
     private String showHistory;
     private String bookedQuantity;
+    private String urlOrderPublic;
 }

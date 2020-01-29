@@ -181,7 +181,7 @@ public class ProductEditor extends HorizontalLayout implements KeyNotifier {
         binder.setBean(this.productDTO);
 
         if(clipboardHelper != null && this.productDTO != null && this.productDTO.getProductId() != null){
-            clipboardHelper.setContent("http://localhost:8881/gassman-order-service/public/products/"+this.productDTO.getProductId());
+            clipboardHelper.setContent(this.productLabelConfig.getUrlOrderPublic()+this.productDTO.getProductId());
         }
 
         setVisible(true);
