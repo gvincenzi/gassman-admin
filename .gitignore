@@ -2,10 +2,13 @@ HELP.md
 target/
 out/**
 node_modules/
-!.mvn/wrapper/maven-wrapper.jar
+data/
+package-lock.json
+.mvn
+mvnw
+mvnw.cmd
 !**/src/main/**
 !**/src/test/**
-package-lock.json
 
 ### STS ###
 .apt_generated
